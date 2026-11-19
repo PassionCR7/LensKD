@@ -2,8 +2,15 @@
 
 **白盒知识蒸馏的最优形态：双投影器跨词表对齐 + 熵门控自适应散度 + 在线策略迭代**
 
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/pytorch-2.1%2B-ee4c2c)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 针对小模型（25.83M）从大模型（596M，23 倍容量鸿沟）蒸馏的真实工程实现。
 不是论文复述，是踩过每个坑之后的可用版本。
+
+> 姊妹项目 **[ChorusKD](https://github.com/PassionCR7/ChorusKD)** — 黑盒（闭源 API）蒸馏，
+> 只有文本通道时的最优形态。
 
 ---
 
@@ -152,6 +159,10 @@ pip install -r requirements.txt
 - 学生基线权重：`D:\workspace\xllm\out\full_sft_512.pth`
 - 教师模型：Qwen3-0.6B（路径见 `config.py` 的 `TeacherCfg.model_path`）
 - SFT 语料：`D:\workspace\xllm\dataset\sft_t2t_mini.jsonl`
+
+> **关于权重文件**：本仓库**不包含**任何 `.pth` 权重（单个 116MB，超过 GitHub
+> 100MB 硬限制，且训练产物不应进版本库）。`out/` 已在 `.gitignore` 中排除。
+> 蒸馏产物需按下方命令自行训练生成。
 
 ### 训练
 
