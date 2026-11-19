@@ -1,0 +1,46 @@
+# ---- 模型权重 ----
+# 两个 .pth 各 116MB，超过 GitHub 单文件 100MB 硬限制。
+# 权重需要自行训练生成，或改用 Git LFS / Release 附件分发。
+out/
+*.pth
+*.pt
+*.bin
+*.safetensors
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ---- 环境 ----
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# ---- 缓存 ----
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---- 编辑器 ----
+.vscode/
+.idea/
+*.swp
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 日志与临时 ----
+*.log
+tmp/
+temp/
