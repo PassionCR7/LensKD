@@ -1,0 +1,119 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "LensKD: Dual-Projector Cross-Vocabulary Alignment with Entropy-Gated Adaptive Divergence for White-Box Knowledge Distillation"
+abstract: >-
+  A white-box knowledge distillation framework for distilling a 596M teacher
+  into a 25.83M student across a 23x capacity gap and disjoint vocabularies.
+  LensKD unifies teacher and student output spaces with twin projectors,
+  identifies a projector-induced distribution flattening effect (teacher entropy
+  rising from 1.33 to 7.33) and resolves it with a dual-path fusion of native
+  and projected KL, and adds entropy-gated adaptive divergence plus a
+  progressive on-policy schedule.
+type: software
+authors:
+  - name: "PassionCR7"
+    alias: "PassionCR7"
+    website: "https://github.com/PassionCR7"
+repository-code: "https://github.com/PassionCR7/LensKD"
+url: "https://github.com/PassionCR7/LensKD"
+license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-11-19"
+keywords:
+  - knowledge distillation
+  - large language models
+  - model compression
+  - cross-vocabulary alignment
+  - on-policy distillation
+  - pytorch
+identifiers:
+  - type: url
+    value: "https://github.com/PassionCR7/LensKD"
+    description: "Source repository"
+preferred-citation:
+  type: software
+  title: "LensKD: Dual-Projector Cross-Vocabulary Alignment with Entropy-Gated Adaptive Divergence for White-Box Knowledge Distillation"
+  authors:
+    - name: "PassionCR7"
+      website: "https://github.com/PassionCR7"
+  year: 2026
+  url: "https://github.com/PassionCR7/LensKD"
+references:
+  - type: conference-paper
+    title: "Dual-Space Knowledge Distillation for Large Language Models"
+    authors:
+      - family-names: Zhang
+        given-names: Songming
+      - family-names: Zhang
+        given-names: Xue
+      - family-names: Sun
+        given-names: Zengkui
+      - family-names: Chen
+        given-names: Yufeng
+      - family-names: Xu
+        given-names: Jinan
+    conference:
+      name: "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP)"
+    year: 2024
+    doi: "10.18653/v1/2024.emnlp-main.1010"
+    url: "https://aclanthology.org/2024.emnlp-main.1010/"
+
+  - type: conference-paper
+    title: "On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes"
+    authors:
+      - family-names: Agarwal
+        given-names: Rishabh
+      - family-names: Vieillard
+        given-names: Nino
+      - family-names: Zhou
+        given-names: Yongchao
+    conference:
+      name: "International Conference on Learning Representations (ICLR)"
+    year: 2024
+    url: "https://arxiv.org/abs/2306.13649"
+
+  - type: conference-paper
+    title: "MiniLLM: On-Policy Distillation of Large Language Models"
+    authors:
+      - family-names: Gu
+        given-names: Yuxian
+      - family-names: Dong
+        given-names: Li
+      - family-names: Wei
+        given-names: Furu
+      - family-names: Huang
+        given-names: Minlie
+    conference:
+      name: "International Conference on Learning Representations (ICLR)"
+    year: 2024
+    url: "https://arxiv.org/abs/2306.08543"
+
+  - type: conference-paper
+    title: "ToDi: Token-wise Distillation via Fine-Grained Divergence Control"
+    authors:
+      - family-names: Jung
+        given-names: Seongryong
+      - family-names: Yoon
+        given-names: Suwan
+      - family-names: Kim
+        given-names: DongGeon
+      - family-names: Lee
+        given-names: Hwanhee
+    conference:
+      name: "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)"
+    year: 2025
+    url: "https://aclanthology.org/2025.emnlp-main.409/"
+
+  - type: conference-paper
+    title: "TinyBERT: Distilling BERT for Natural Language Understanding"
+    authors:
+      - family-names: Jiao
+        given-names: Xiaoqi
+      - family-names: Yin
+        given-names: Yichun
+      - family-names: Shang
+        given-names: Lifeng
+    conference:
+      name: "Findings of the Association for Computational Linguistics: EMNLP 2020"
+    year: 2020
+    url: "https://arxiv.org/abs/1909.10351"

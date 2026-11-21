@@ -4,13 +4,18 @@
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/pytorch-2.1%2B-ee4c2c)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![Cite](https://img.shields.io/badge/cite-CITATION.cff-lightgrey)](CITATION.cff)
 
 针对小模型（25.83M）从大模型（596M，23 倍容量鸿沟）蒸馏的真实工程实现。
 不是论文复述，是踩过每个坑之后的可用版本。
 
 > 姊妹项目 **[ChorusKD](https://github.com/PassionCR7/ChorusKD)** — 黑盒（闭源 API）蒸馏，
 > 只有文本通道时的最优形态。
+
+> **使用与引用**：本仓库采用 Apache-2.0，**要求署名**。改进、再分发或用于
+> 学术工作时，须在文档或致谢中注明项目名、作者与仓库地址，并保留 `NOTICE`
+> 文件。详见 [License 与署名要求](#license-与署名要求)。
 
 ---
 
@@ -239,16 +244,40 @@ LensKD/
 
 ---
 
-## 与论文的关系
+## 创新点与出处
 
-| 技术 | 出处 | LensKD 的改动 |
+本仓库不是对任何单篇论文的实现，而是**多个上游方法在真实工程约束下的融合与改进**。
+下表区分两件事：哪些技术来自上游（附论文链接），哪些是本仓库自己的贡献。
+
+### 一、上游技术来源（附论文链接）
+
+| 技术 | 出处 | 论文 / 代码 |
 |---|---|---|
-| 双空间投影 | DSKD (ACL 2024) | 发现投影抹平问题，加 native 路径融合 |
-| 伪逆初始化 | DSKD | 额外计算并报告**理论下界**，避免误判为实现 bug |
-| 熵门控自适应散度 | ToDi / Entropy-Aware OPD | 在双路径上分别计算，暴露 proj 路径的门控失真 |
-| 在线策略蒸馏 | GKD / DAgger for LLM | λ 渐进 + 自采样降频 |
-| 中间层表征对齐 | TinyBERT | 相对深度映射 + cosine + 权重衰减 |
-| 精确 token 对齐 | ETA | 支持 1→k / k→1 一对多 |
+| 双空间投影 + 伪逆初始化 | DSKD | [EMNLP 2024](https://aclanthology.org/2024.emnlp-main.1010/) · [arXiv:2406.17328](https://arxiv.org/abs/2406.17328) · [代码](https://github.com/songmzhang/DSKD) |
+| 扩展版（投影器形式化 + ETA 算法） | DSKDv2 | [arXiv:2504.11426](https://arxiv.org/abs/2504.11426) · [代码](https://github.com/songmzhang/DSKDv2) |
+| 在线策略蒸馏（GKD） | Agarwal et al. | [ICLR 2024 · arXiv:2306.13649](https://arxiv.org/abs/2306.13649) |
+| 反向 KL（mode-seeking）目标 | MiniLLM | [ICLR 2024 · arXiv:2306.08543](https://arxiv.org/abs/2306.08543) |
+| 逐 token 前向/反向 KL 混合 | ToDi | [EMNLP 2025 · arXiv:2505.16297](https://aclanthology.org/2025.emnlp-main.409/) |
+| 教师熵驱动的门控信号 | EOPD | [ICML 2026 · arXiv:2603.07079](https://arxiv.org/abs/2603.07079) |
+| 中间层表征对齐 | TinyBERT | [Findings of EMNLP 2020 · arXiv:1909.10351](https://arxiv.org/abs/1909.10351) |
+
+> **修正说明**：早期版本将 DSKD 标注为 "ACL 2024"，实为 **EMNLP 2024 main**
+> （Anthology ID `2024.emnlp-main.1010`）。DSKDv2 是其 2025 年期刊扩展版，
+> 首次给出投影器的完整形式化与 ETA 算法，本仓库的 ETA 实现参照的是 DSKDv2。
+
+### 二、本仓库的原创贡献
+
+| # | 贡献 | 对应模块 | 与上游的差异 |
+|---|---|---|---|
+| **1** | **发现并量化投影抹平效应**：伪逆投影后教师熵从 1.33 升至 7.33（接近均匀分布上界），据此解释熵门控为何恒为 1 而失效 | `projector.py` | DSKD 只报告投影有效，未讨论分布形状退化。这是本仓库的实测发现 |
+| **2** | **双路径 KL 融合**：同时保留 native（尖锐但有 13.8% 质量丢失）与 proj（零丢失但被抹平）两条路径，按 `r=0.3` 加权 | `loss.py` | 上游方法只选一条路径。融合后 `kd` 从 7.84 降至 3.26，门控恢复分流能力（native 0.42 / proj 0.98） |
+| **3** | **投影残差理论下界的解析计算**：证明 `lstsq` 残差 0.88621 恰等于维度决定的不可约下界，排除"调参可降低残差"的误判 | `projector.py` | DSKD 未给出该下界。工程价值在于：避免把数学必然当成实现 bug 反复调试 |
+| **4** | **熵门控在双路径上分别计算**：暴露 proj 路径的门控失真（恒 1.0），使 native 路径的逐位置区分能力可观测 | `divergence.py` | ToDi / EOPD 单路径计算，无法观测这种路径间的门控差异 |
+| **5** | **在线策略的三条工程纪律**：λ 从 0.2 渐进到 0.7（非固定值）、自采样降频至每 4 步、实证 λ=1 在 23× 容量鸿沟下不可用 | `train.py`, `data.py` | GKD 假设 interactive-expert 成立；在 596M→25.83M 场景下该假设失效，需上述约束 |
+| **6** | **截断策略与教师侧位置一致性**：保留 prompt 前缀 + 从 assistant 起始截取剩余预算；截断后反解文本重编码喂教师 | `data.py` | 解决 99% 样本被丢弃与两侧位置错位的耦合问题，上游未涉及 |
+
+**核心结论一句话**：DSKD 说"统一输出空间就能跨词表蒸馏"，本仓库补充"统一之后分布会被
+抹平，所以必须同时保留原生路径"。这是本仓库唯一可被称为新发现的点，其余为工程改进。
 
 ---
 
@@ -260,9 +289,46 @@ LensKD/
    （native 路径补信号）而不是"解决它"。
 3. **在线策略只做 batch 级混合**，未做 token 级的重要性加权。
 4. 样本量小时（<100）输出质量差是正常的，趋势正确即可。
+5. **双路径权重 `r=0.3` 未做系统扫描**。当前取值基于单点实验，缺乏消融曲线支撑。
 
 ---
 
-## License
+## License 与署名要求
 
-MIT
+本项目采用 **[Apache License 2.0](LICENSE)**（自 MIT 迁移而来）。
+
+**为什么不是 MIT**：MIT 以 "without restriction" 授予权利，在其之上附加"必须署名"
+会造成条款冲突，法律上不可执行。Apache-2.0 第 4(b)/(c)/(d) 条提供了有约束力的义务，
+是能在保持开源属性同时强制署名的标准方案。
+
+### 你必须做的事
+
+若你使用、修改、扩展、再分发或基于 LensKD 构建工作（包括学术研究、商业产品、
+衍生开源项目、或作为更大系统的组件），**必须**：
+
+| 要求 | 法律依据 | 具体做法 |
+|---|---|---|
+| **注明出处** | Apache-2.0 §4(c)、NOTICE | 在文档、论文或产品致谢中写明：项目名 **LensKD**、作者 **PassionCR7**、地址 **https://github.com/PassionCR7/LensKD** |
+| **传递 NOTICE** | Apache-2.0 §4(d) | 再分发时附带 [`NOTICE`](NOTICE) 文件的可读副本 |
+| **标注修改** | Apache-2.0 §4(b) | 任何被改动的文件须带有醒目的"已修改"声明 |
+| **不得冒认** | 著作权法 + §4(c) | 不得将本项目的设计、实现或实验结论声称为自己的原创，不得移除署名 |
+
+### 学术引用
+
+```bibtex
+@software{lenskd2026,
+  title  = {LensKD: Dual-Projector Cross-Vocabulary Alignment with
+            Entropy-Gated Adaptive Divergence for White-Box Distillation},
+  author = {PassionCR7},
+  year   = {2026},
+  url    = {https://github.com/PassionCR7/LensKD}
+}
+```
+
+机器可读元数据见 [`CITATION.cff`](CITATION.cff)，GitHub 会据此生成 "Cite this repository" 按钮。
+
+### 上游致谢
+
+本项目的技术基础来自 DSKD、GKD、MiniLLM、ToDi、EOPD、TinyBERT 等工作，
+完整清单与论文链接见上文 [上游技术来源](#一上游技术来源附论文链接) 及 [`NOTICE`](NOTICE)。
+这些是各自作者的独立研究成果，本项目仅在其基础上做增量改进。

@@ -1,0 +1,123 @@
+LensKD
+Copyright 2026 PassionCR7
+
+This product includes software developed at
+https://github.com/PassionCR7/LensKD
+
+================================================================================
+ATTRIBUTION REQUIREMENT / 署名要求
+================================================================================
+
+This NOTICE file is part of the distribution and is legally binding under
+Section 4(d) of the Apache License, Version 2.0.
+
+If you use, modify, extend, redistribute, or build upon LensKD — in academic
+work, in a commercial product, in a derivative open-source project, or as a
+component of a larger system — you MUST:
+
+  1. Cite the original project. At minimum, include the project name
+     (LensKD), the author (PassionCR7), and the repository URL
+     (https://github.com/PassionCR7/LensKD) in your documentation, paper,
+     or product credits.
+
+  2. Propagate this NOTICE file. Any redistribution of LensKD or its
+     Derivative Works must include a readable copy of this NOTICE file
+     (Apache-2.0 Section 4(d)).
+
+  3. Mark modified files. Any file you change must carry a prominent notice
+     stating that you changed it (Apache-2.0 Section 4(b)).
+
+  4. Do not misrepresent provenance. Do not claim the original design,
+     implementation, or empirical findings as your own work, and do not
+     remove or obscure the copyright and attribution notices.
+
+中文说明：
+
+  本项目采用 Apache License 2.0。依据该许可证第 4(b)、4(c)、4(d) 条，
+  任何使用、修改、扩展、再分发或基于 LensKD 构建的工作，必须：
+
+  1. 注明出处：在文档、论文或产品致谢中至少包含项目名（LensKD）、
+     作者（PassionCR7）与仓库地址（https://github.com/PassionCR7/LensKD）。
+  2. 传递本 NOTICE 文件：再分发时必须附带本文件的副本。
+  3. 标注修改：任何被改动的文件须带有醒目的“已修改”声明。
+  4. 不得冒认：不得将本项目的原始设计、实现或实验结论声称为自己
+     的原创工作，不得移除或隐匿版权与署名信息。
+
+================================================================================
+ACADEMIC CITATION / 学术引用
+================================================================================
+
+If you use LensKD in academic work, please cite it as:
+
+  @software{lenskd2026,
+    title  = {LensKD: Dual-Projector Cross-Vocabulary Alignment with
+              Entropy-Gated Adaptive Divergence for White-Box Distillation},
+    author = {PassionCR7},
+    year   = {2026},
+    url    = {https://github.com/PassionCR7/LensKD}
+  }
+
+Machine-readable metadata is provided in CITATION.cff.
+
+================================================================================
+UPSTREAM CREDITS / 上游工作致谢
+================================================================================
+
+LensKD builds upon and extends the following prior work. These are independent
+research contributions by their respective authors and are credited here for
+transparency. See the "与论文的关系" (Relationship to Prior Work) section of
+README.md for a precise statement of what LensKD adds to each.
+
+  - Dual-Space Knowledge Distillation (DSKD)
+    Zhang et al., EMNLP 2024.  https://arxiv.org/abs/2406.17328
+    LensKD's contribution: identifies and quantifies the projector-induced
+    distribution flattening (entropy 1.33 -> 7.33), and introduces a
+    dual-path fusion that restores the sharp native signal.
+
+  - A Dual-Space Framework for General Knowledge Distillation of LLMs
+    Zhang et al., 2025 (extended version).  https://arxiv.org/abs/2504.11426
+    Source of the projector formulation and the Exact Token Alignment (ETA)
+    algorithm that LensKD adopts and re-implements.
+
+  - On-Policy Distillation of Language Models (GKD)
+    Agarwal et al., ICLR 2024.  https://arxiv.org/abs/2306.13649
+    LensKD's contribution: progressive lambda schedule and down-sampled
+    self-sampling, plus the finding that pure on-policy (lambda=1) is unusable
+    at a 23x capacity gap.
+
+  - MiniLLM: On-Policy Distillation of Large Language Models
+    Gu et al., ICLR 2024.  https://arxiv.org/abs/2306.08543
+    Source of the reverse-KL (mode-seeking) objective.
+
+  - ToDi: Token-wise Distillation via Fine-Grained Divergence Control
+    Jung et al., EMNLP 2025.  https://arxiv.org/abs/2505.16297
+    Source of per-token forward/reverse KL mixing.
+
+  - Entropy-Aware On-Policy Distillation of Language Models (EOPD)
+    Jin et al., ICML 2026.  https://arxiv.org/abs/2603.07079
+    Source of entropy-driven gating as a difficulty signal.
+
+  - TinyBERT: Distilling BERT for Natural Language Understanding
+    Jiao et al., Findings of EMNLP 2020.  https://arxiv.org/abs/1909.10351
+    Source of intermediate-layer representation alignment.
+
+================================================================================
+THIRD-PARTY COMPONENTS / 第三方组件
+================================================================================
+
+LensKD is designed to operate alongside, but does not bundle or redistribute,
+the following:
+
+  - PyTorch (BSD-3-Clause)  https://github.com/pytorch/pytorch
+  - HuggingFace Transformers (Apache-2.0)  https://github.com/huggingface/transformers
+  - Qwen3-0.6B teacher weights (Apache-2.0)  https://huggingface.co/Qwen
+
+Model weights are NOT distributed with this repository. Users must obtain them
+from their upstream providers and comply with those providers' licenses.
+
+================================================================================
+NO WARRANTY / 免责声明
+================================================================================
+
+LensKD is provided "AS IS", without warranty of any kind, as set out in
+Sections 7 and 8 of the Apache License, Version 2.0.
