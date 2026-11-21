@@ -1,0 +1,68 @@
+{
+  "experiment": "exp1_projection_lower_bound",
+  "timestamp": "2026-11-21T15:14:13",
+  "elapsed_sec": 6.26,
+  "device": "cuda",
+  "config": {
+    "teacher_vocab": 151936,
+    "teacher_dim": 1024,
+    "student_vocab": 6400,
+    "student_dim": 512,
+    "common_tokens": 5850
+  },
+  "q1_actual_residual": {
+    "t2s": 0.886174201965332,
+    "s2t": 0.7421886920928955,
+    "readme_claimed": 0.88621,
+    "abs_diff": 3.5798034668022005e-05,
+    "matches_claim": true
+  },
+  "q2_lower_bounds": {
+    "qr": 0.886174201965332,
+    "svd": 0.886174201965332,
+    "spectrum": 0.5117660164833069,
+    "lstsq": 0.886174201965332,
+    "gaps": {
+      "qr": 0.0,
+      "svd": 0.0,
+      "spectrum": 0.37440818548202515
+    }
+  },
+  "q3_sweep": [
+    {
+      "S": 585,
+      "lstsq_res": 0.3257482945919037,
+      "qr_lb": 0.3257482945919037,
+      "gap": 0.0
+    },
+    {
+      "S": 1462,
+      "lstsq_res": 0.7459959983825684,
+      "qr_lb": 0.7459959983825684,
+      "gap": 0.0
+    },
+    {
+      "S": 2925,
+      "lstsq_res": 0.8423718810081482,
+      "qr_lb": 0.8423718810081482,
+      "gap": 0.0
+    },
+    {
+      "S": 4387,
+      "lstsq_res": 0.8720060586929321,
+      "qr_lb": 0.8720059990882874,
+      "gap": 5.960464477539063e-08
+    },
+    {
+      "S": 5850,
+      "lstsq_res": 0.886174201965332,
+      "qr_lb": 0.886174201965332,
+      "gap": 0.0
+    }
+  ],
+  "ablation_init": {
+    "pseudo_inverse": 0.886174201965332,
+    "identity_like": 1.2973302602767944,
+    "random": 1.248990774154663
+  }
+}
